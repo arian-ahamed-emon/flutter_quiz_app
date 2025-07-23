@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:quiz_app/%20screens/sign_in_screen.dart';
+import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
+import 'package:quiz_app/ui/utils/assets_path.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -29,7 +30,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/logo.png', height: 225, width: 300),
+            Image.asset(AssetPath.primaryLogo, height: 225, width: 300),
           ],
         ),
       ),

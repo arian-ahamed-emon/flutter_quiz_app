@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_up_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 
@@ -129,7 +130,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
   void _onTapSignInButton(){
-
+Navigator.push(context, MaterialPageRoute(builder: (context) => MainBottomNavBarScreen(),));
   }
   void _onTapSignUpButton() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => SignUpScreen(),));

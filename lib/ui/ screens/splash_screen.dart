@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 
@@ -19,7 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
     await Future.delayed(Duration(seconds: 3));
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
+      MaterialPageRoute(builder: (context) => MainBottomNavBarScreen()),
     );
   }
 

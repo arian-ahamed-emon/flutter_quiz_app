@@ -29,7 +29,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
     sortedPlayers.sort((a, b) => b["points"].compareTo(a["points"]));
 
     final top3 = sortedPlayers.take(3).toList();
-    final restPlayers = sortedPlayers.sublist(3);
+    final restPlayers = sortedPlayers;
 
     return Scaffold(
       backgroundColor: Colors.deepPurple,
@@ -107,7 +107,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
                         radius: 16,
                         backgroundColor: Colors.green.shade100,
                         child: Text(
-                          '${index + 4}', // because top 3 already shown
+                          '${index + 1}',
                           style: const TextStyle(color: Colors.black),
                         ),
                       ),
@@ -131,6 +131,29 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
               },
             ),
           ),
+          Divider(color: Colors.white,),
+          Row(
+            children: [
+              SizedBox(width: 15,),
+              CircleAvatar(
+                radius: 18,
+                child: Text('${players.length}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
+                backgroundColor: Colors.deepPurple,
+              ),
+              SizedBox(width: 20,),
+              CircleAvatar(
+                radius: 18,
+                backgroundImage: AssetImage(AssetPath.profileImage),
+              ),
+              SizedBox(width: 10,),
+              Expanded(
+                child: Text('Md Remon Sheikh',style: GoogleFonts.lato(color: Colors.white,fontWeight: FontWeight.bold),),
+              ),
+              Text('1000',style: GoogleFonts.lato(color: Colors.white,fontWeight: FontWeight.bold),),
+              SizedBox(width: 18,)
+            ],
+          ),
+          SizedBox(height: 5,),
         ],
       ),
     );

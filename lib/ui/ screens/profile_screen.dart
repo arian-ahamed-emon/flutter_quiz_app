@@ -32,67 +32,99 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: [SizedBox(height: 30), CircleAvatar(radius: 50,backgroundImage: AssetImage(AssetPath.signInLogo),),
-
-        SizedBox(height: 10,),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Md Remon Sheikh',
-              prefixIcon: Icon(Icons.person,color: Colors.white,),
-              border: OutlineInputBorder()
-            ),
+        children: [
+          SizedBox(height: 30),
+          CircleAvatar(
+            radius: 50,
+            backgroundImage: AssetImage(AssetPath.signInLogo),
           ),
-        ),
+
+          SizedBox(height: 10),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: TextField(
               decoration: InputDecoration(
-                  hintText: 'Md Remon Sheikh',
-                  prefixIcon: Icon(Icons.person,color: Colors.white,),
-                  border: OutlineInputBorder()
+                filled: true,
+                enabled: true,
+                prefixIcon: Icon(Icons.person, color: Colors.deepPurple),
+                hintText: 'Md Remon Sheikh',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintStyle: TextStyle(color: Colors.deepPurple),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(10),
             child: TextField(
               decoration: InputDecoration(
-                  hintText: 'Md Remon Sheikh',
-                  prefixIcon: Icon(Icons.person,color: Colors.white,),
-                  border: OutlineInputBorder()
+                filled: true,
+                prefixIcon: Icon(Icons.smartphone, color: Colors.deepPurple),
+                hintText: '01328123424',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintStyle: TextStyle(color: Colors.deepPurple),
               ),
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(children: [
+            padding: const EdgeInsets.all(10),
+            child: TextField(
+              decoration: InputDecoration(
+                filled: true,
+                prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
+                hintText: 'dev.emon.bd@gmail.com',
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                hintStyle: TextStyle(color: Colors.deepPurple),
+              ),
+            ),
+          ),
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
+                  onPressed: () {},
+                  child: Text('Statistics',style: GoogleFonts.lato(fontSize: 16),),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
+                  onPressed: () {},
+                  child: Text('Leaderboard',style: GoogleFonts.lato(fontSize: 16),),
+                ),
+              ],
+            ),
 
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(200, 40)
-              ),
-                onPressed: (){}, child: Text('')),
-              SizedBox(width: 10,),
-              ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                fixedSize: Size(200, 40)
-              ),
-                onPressed: (){}, child: Text('')),
-            ],
+          SizedBox(height: 10),
+         Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
+                  onPressed: () {},
+                  child: Text('Bookmark',style: GoogleFonts.lato(fontSize: 16),),
+                ),
+                SizedBox(width: 10),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
+                  onPressed: () {},
+                  child: Text('Invite Friends',style: GoogleFonts.lato(fontSize: 16),),
+                ),
+              ],
             ),
-          ),
-          SizedBox(height: 10,),
-       (
-                fixedSize: Size(200, 40)
-              ),
-                onPressed: (){}, child: Text('')),
-            ],
-            ),
-          ),
-          SizedBox(height: 10,),
-          ElevatedButton(onPressed: (){}, child: Text('Log Out'))
+
+          SizedBox(height: 10),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(fixedSize: Size(330, 45)),
+              onPressed: () {}, child: Text('Log Out')),
         ],
       ),
     );

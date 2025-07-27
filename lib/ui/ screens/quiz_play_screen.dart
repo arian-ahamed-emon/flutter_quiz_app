@@ -16,8 +16,10 @@ class _QuizScreenState extends State<QuizScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
     appBar: AppBar(
-      title: Text('Play Quiz',style: GoogleFonts.lato(),),
+      backgroundColor: Colors.deepPurple,
+      title: Text('Play Quiz',style: GoogleFonts.lato(color: Colors.white),),
     ),
+    backgroundColor: Colors.deepPurple,
     body: SingleChildScrollView(
       child: GridView.builder(
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

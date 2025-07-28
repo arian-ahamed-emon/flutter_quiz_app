@@ -24,153 +24,147 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ScreenBackground(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                Image.asset(AssetPath.signInLogo, height: 100),
-                const SizedBox(height: 16),
-                Text(
-                  'Welcome Back!',
-                  style: GoogleFonts.lato(
-                    fontSize: 24,
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 30),
-
-                // Email Field
-                _buildTextField(
-                  controller: _emailTEController,
-                  hint: 'Email',
-                  icon: Icons.email_outlined,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (val) => (val == null || val.isEmpty)
-                      ? 'Please enter a valid email'
-                      : null,
-                ),
-                const SizedBox(height: 16),
-
-                // Password Field
-                _buildTextField(
-                  controller: _passwordTEController,
-                  hint: 'Password',
-                  icon: Icons.lock_outline,
-                  obscureText: _obscurePassword,
-                  suffix: IconButton(
-                    icon: Icon(
-                      _obscurePassword
-                          ? Icons.visibility_off
-                          : Icons.visibility,
-                      color: Colors.white70,
-                    ),
-                    onPressed: () {
-                      setState(() => _obscurePassword = !_obscurePassword);
-                    },
-                  ),
-                  validator: (val) => (val == null || val.isEmpty)
-                      ? 'Please enter your password'
-                      : null,
-                ),
-
-                const SizedBox(height: 12),
-
-                Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: _onTapForgotButton,
-                    child: Text(
-                      'Forgot Password?',
-                      style: GoogleFonts.lato(color: Colors.white),
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: ScreenBackground(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+            child: Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  Image.asset(AssetPath.signInLogo, height: 100),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Welcome Back!',
+                    style: GoogleFonts.lato(
+                      fontSize: 24,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ),
+                  const SizedBox(height: 30),
 
-                const SizedBox(height: 16),
+                  _buildTextField(
+                    controller: _emailTEController,
+                    hint: 'Email',
+                    icon: Icons.email_outlined,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (val) => (val == null || val.isEmpty)
+                        ? 'Please enter a valid email'
+                        : null,
+                  ),
+                  const SizedBox(height: 16),
 
-                // Login Button
-                SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: _onTapSignInButton,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.white,
-                      foregroundColor: Colors.deepPurple,
-                      padding: const EdgeInsets.symmetric(vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                  _buildTextField(
+                    controller: _passwordTEController,
+                    hint: 'Password',
+                    icon: Icons.lock_outline,
+                    obscureText: _obscurePassword,
+                    suffix: IconButton(
+                      icon: Icon(
+                        _obscurePassword
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                        color: Colors.white70,
                       ),
+                      onPressed: () {
+                        setState(() => _obscurePassword = !_obscurePassword);
+                      },
                     ),
-                    child: Text(
-                      "Sign In",
-                      style: GoogleFonts.lato(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+                    validator: (val) => (val == null || val.isEmpty)
+                        ? 'Please enter your password'
+                        : null,
                   ),
-                ),
 
-                const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
-                Row(
-                  children: [
-                    const Expanded(child: Divider(color: Colors.white70)),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _onTapForgotButton,
                       child: Text(
-                        "Or continue with",
-                        style: GoogleFonts.lato(color: Colors.white70),
+                        'Forgot Password?',
+                        style: GoogleFonts.lato(color: Colors.white),
                       ),
                     ),
-                    const Expanded(child: Divider(color: Colors.white70)),
-                  ],
-                ),
+                  ),
 
-                const SizedBox(height: 16),
+                  const SizedBox(height: 16),
 
-                // Social Login
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _socialButton(AssetPath.googleLogo, _onTapGoogleSignIn),
-                    const SizedBox(width: 16),
-                    _socialButton(AssetPath.facebookLogo, _onTapFacebookSignIn),
-                  ],
-                ),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _onTapSignInButton,
 
-                const SizedBox(height: 32),
-
-                // Sign Up Link
-                Text.rich(
-                  TextSpan(
-                    text: "Don't have an account?",
-                    style: GoogleFonts.lato(color: Colors.white),
-                    children: [
-                      TextSpan(
-                        text: " Sign Up",
+                      child: Text(
+                        "Sign In",
                         style: GoogleFonts.lato(
+                          fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => const SignUpScreen(),
-                              ),
-                            );
-                          },
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+
+                  Row(
+                    children: [
+                      const Expanded(child: Divider(color: Colors.white70)),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          "Or continue with",
+                          style: GoogleFonts.lato(color: Colors.white70),
+                        ),
+                      ),
+                      const Expanded(child: Divider(color: Colors.white70)),
+                    ],
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _socialButton(AssetPath.googleLogo, _onTapGoogleSignIn),
+                      const SizedBox(width: 16),
+                      _socialButton(
+                        AssetPath.facebookLogo,
+                        _onTapFacebookSignIn,
                       ),
                     ],
                   ),
-                ),
-              ],
+
+                  const SizedBox(height: 32),
+
+                  Text.rich(
+                    TextSpan(
+                      text: "Don't have an account?",
+                      style: GoogleFonts.lato(color: Colors.white),
+                      children: [
+                        TextSpan(
+                          text: " Sign Up",
+                          style: GoogleFonts.lato(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black45,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const SignUpScreen(),
+                                ),
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
@@ -240,11 +234,7 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _onTapGoogleSignIn() {
-    // Future: Implement Google Sign-in
-  }
+  void _onTapGoogleSignIn() {}
 
-  void _onTapFacebookSignIn() {
-    // Future: Implement Facebook Sign-in
-  }
+  void _onTapFacebookSignIn() {}
 }

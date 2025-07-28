@@ -7,18 +7,16 @@ final Widget child;
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(
-          children: [
-            Image.asset(
-                AssetPath.screenBackground,
-              width: screenSize.width,
-              height: screenSize.height,
-              fit: BoxFit.cover,
-            ),
-            SafeArea(child: child)
-          ]
-      ),
+    return Stack(
+            children: [
+              Image.asset(
+                  AssetPath.screenBackground,
+                width: screenSize.width,
+                height: screenSize.height,
+                fit: BoxFit.cover,
+              ),
+              SafeArea(child: child)
+            ],
     );
   }
 }

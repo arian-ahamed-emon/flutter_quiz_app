@@ -16,7 +16,7 @@ class QuizApp extends StatelessWidget {
       title: 'Quiz App',
       theme: ThemeData(
         elevatedButtonTheme: _elevatedButtonThemeData(),
-        inputDecorationTheme: _inputDecorationTheme(),
+        //inputDecorationTheme: _inputDecorationTheme(),
       ),
       home: SplashScreen(),
     );

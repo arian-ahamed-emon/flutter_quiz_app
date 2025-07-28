@@ -67,6 +67,7 @@ class _BookMarkScreenState extends State<BookMarkScreen> {
         title: Text('Bookmarks', style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.bold)),
         centerTitle: true,
       ),
+      resizeToAvoidBottomInset: true,
       body: ScreenBackground(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),

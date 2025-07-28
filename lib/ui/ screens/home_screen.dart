@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/ui/%20screens/kids_quiz_screen.dart';
+import 'package:quiz_app/ui/%20screens/programing_quiz_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 import '../widgets/custom_app_bar.dart';
@@ -13,6 +15,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+  final List<Widget> _screens = [
+    ProgramingQuizScreen(),
+    KidsQuizScreen()
+  ];
+
   List<Map<String, dynamic>> quizCategory = [
     {'title': 'Technology', 'img': AssetPath.tech},
     {'title': 'Science', 'img': AssetPath.seince},
@@ -211,82 +219,87 @@ class _HomeScreenState extends State<HomeScreen> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           final quizList = _quizList[index];
-          return Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            color: Colors.white,
-            elevation: 4,
-            child: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
-                    child: Image.asset(
-                      '${quizList['img']}',
-                      height: 130,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
+          return GestureDetector(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => _screens[index],));
+            },
+            child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(16),
+              ),
+              color: Colors.white,
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.asset(
+                        '${quizList['img']}',
+                        height: 130,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  Spacer(),
-                  Text(
-                    '${quizList['title']}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black87,
+                    const SizedBox(height: 12),
+                    Spacer(),
+                    Text(
+                      '${quizList['title']}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black87,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${quizList['amount']}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 14,
-                      color: Colors.grey.shade600,
+                    const SizedBox(height: 4),
+                    Text(
+                      '${quizList['amount']}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 14,
+                        color: Colors.grey.shade600,
+                      ),
                     ),
-                  ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          const Icon(
-                            Icons.emoji_events,
-                            size: 18,
-                            color: Colors.amber,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '120k',
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.deepPurple,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.emoji_events,
+                              size: 18,
+                              color: Colors.amber,
                             ),
+                            const SizedBox(width: 4),
+                            Text(
+                              '120k',
+                              style: GoogleFonts.poppins(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.deepPurple,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Container(
+                          width: 36,
+                          height: 36,
+                          decoration: const BoxDecoration(
+                            color: Colors.orange,
+                            shape: BoxShape.circle,
                           ),
-                        ],
-                      ),
-                      Container(
-                        width: 36,
-                        height: 36,
-                        decoration: const BoxDecoration(
-                          color: Colors.orange,
-                          shape: BoxShape.circle,
+                          child: const Icon(
+                            Icons.play_arrow,
+                            color: Colors.white,
+                            size: 20,
+                          ),
                         ),
-                        child: const Icon(
-                          Icons.play_arrow,
-                          color: Colors.white,
-                          size: 20,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           );

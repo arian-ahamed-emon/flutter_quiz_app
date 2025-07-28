@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
+import 'package:quiz_app/ui/widgets/screen_background.dart';
 
 class LeaderBoardScreen extends StatefulWidget {
   const LeaderBoardScreen({super.key});
@@ -32,9 +33,10 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
     final restPlayers = sortedPlayers;
 
     return Scaffold(
-      backgroundColor: Colors.deepPurple,
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        automaticallyImplyLeading: false,
+        backgroundColor: Color.fromRGBO(125, 57, 228, 1.0),
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -58,103 +60,105 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
           ],
         ),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 20),
-          // Top 3 Cards
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                buildTopCard(top3[1], 2, isCenter: false),
-                buildTopCard(top3[0], 1, isCenter: true),
-                buildTopCard(top3[2], 3, isCenter: false),
-              ],
+      body: ScreenBackground(
+        child: Column(
+          children: [
+            const SizedBox(height: 20),
+            // Top 3 Cards
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  buildTopCard(top3[1], 2, isCenter: false),
+                  buildTopCard(top3[0], 1, isCenter: true),
+                  buildTopCard(top3[2], 3, isCenter: false),
+                ],
+              ),
             ),
-          ),
 
-          const Divider(color: Colors.white),
-          const SizedBox(height: 10),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-            color: Colors.white,
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            const Divider(color: Colors.white),
+            const SizedBox(height: 10),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+              color: Colors.white,
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text("Rank", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text("Player", style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text("Points", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            const SizedBox(height: 10),
+            Expanded(
+              child: ListView.builder(
+                itemCount: 5,
+                itemBuilder: (context, index) {
+                  final player = restPlayers[index];
+                  return Container(
+                    margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 16,
+                          backgroundColor: Colors.orangeAccent,
+                          child: Text(
+                            '${index + 1}',
+                            style: const TextStyle(color: Colors.black),
+                          ),
+                        ),
+                        const SizedBox(width: 10),
+                        Image.asset(
+                          AssetPath.profileImage,
+                          width: 40,
+                          height: 40,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            player['name'],
+                            style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Text('${player['points']}'),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ),
+            Divider(color: Colors.white,),
+            Row(
               children: [
-                Text("Rank", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("Player", style: TextStyle(fontWeight: FontWeight.bold)),
-                Text("Points", style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(width: 15,),
+                CircleAvatar(
+                  radius: 18,
+                  child: Text('4',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
+
+                ),
+                SizedBox(width: 20,),
+                CircleAvatar(
+                  radius: 18,
+                  backgroundImage: AssetImage(AssetPath.profileImage),
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  child: Text('Md Remon Sheikh',style: GoogleFonts.lato(color: Colors.black,fontWeight: FontWeight.bold),),
+                ),
+                Text('1000',style: GoogleFonts.lato(color: Colors.black,fontWeight: FontWeight.bold),),
+                SizedBox(width: 18,)
               ],
             ),
-          ),
-          const SizedBox(height: 10),
-          Expanded(
-            child: ListView.builder(
-              itemCount: restPlayers.length,
-              itemBuilder: (context, index) {
-                final player = restPlayers[index];
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 16,
-                        backgroundColor: Colors.green.shade100,
-                        child: Text(
-                          '${index + 1}',
-                          style: const TextStyle(color: Colors.black),
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Image.asset(
-                        AssetPath.profileImage,
-                        width: 40,
-                        height: 40,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Text(
-                          player['name'],
-                          style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      Text('${player['points']}'),
-                    ],
-                  ),
-                );
-              },
-            ),
-          ),
-          Divider(color: Colors.white,),
-          Row(
-            children: [
-              SizedBox(width: 15,),
-              CircleAvatar(
-                radius: 18,
-                child: Text('${players.length}',style: TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                backgroundColor: Colors.deepPurple,
-              ),
-              SizedBox(width: 20,),
-              CircleAvatar(
-                radius: 18,
-                backgroundImage: AssetImage(AssetPath.profileImage),
-              ),
-              SizedBox(width: 10,),
-              Expanded(
-                child: Text('Md Remon Sheikh',style: GoogleFonts.lato(color: Colors.white,fontWeight: FontWeight.bold),),
-              ),
-              Text('1000',style: GoogleFonts.lato(color: Colors.white,fontWeight: FontWeight.bold),),
-              SizedBox(width: 18,)
-            ],
-          ),
-          SizedBox(height: 5,),
-        ],
+            SizedBox(height: 5,),
+          ],
+        ),
       ),
     );
   }
@@ -177,7 +181,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
                 children: [
                   CircleAvatar(
                     radius: isCenter ? 35 : 30,
-                    backgroundColor: Colors.green.shade100,
+                    backgroundColor: Colors.deepPurple,
                     child: Icon(Icons.person, size: isCenter ? 35 : 30, color: Colors.grey),
                   ),
                   Positioned(

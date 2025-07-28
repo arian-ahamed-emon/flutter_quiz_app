@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lite_rolling_switch/lite_rolling_switch.dart';
+import 'package:quiz_app/ui/%20screens/profile_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -8,7 +9,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Container(
-        color: Colors.deepPurple,
+        color: Color.fromRGBO(115, 53, 226, 1.0),
         padding: EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         child: Row(
           children: [
@@ -17,52 +18,60 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               backgroundImage: AssetImage(AssetPath.profileImage),
             ),
             SizedBox(width: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Md Remon Sheikh',
-                  style: GoogleFonts.lato(
-                    fontSize: 18,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Card(
-                  color: Colors.white54,
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 6,
+            GestureDetector(
+              onTap: (){
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfileScreen(),));
+              },
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Md Remon Sheikh',
+                    style: GoogleFonts.lato(
+                      fontSize: 18,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
-                    child: Text(
-                      'Expert',
-                      style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(topLeft: Radius.circular(10),bottomRight: Radius.circular(10))
+                    ),
+                    color: Colors.white54,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 10,
+                        vertical: 6,
+                      ),
+                      child: Text(
+                        'Expert',
+                        style: GoogleFonts.lato(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Spacer(),
             LiteRollingSwitch(
-              onTap: () {},
+              value: false,
+              onChanged: (bool state) {},
               onDoubleTap: () {},
               onSwipe: () {},
-              textOffColor: Colors.black,
-              textOnColor: Colors.black,
-              width: 110,
-              value: true,
-              textOn: 'Points',
-              textOff: '100',
-              colorOn: Colors.grey,
-              colorOff: Colors.orange,
-              iconOn: Icons.flash_off,
+              onTap: () {},
+              width: 105,
+              textOffColor: Colors.white,
+              textOnColor: Colors.white,
               iconOff: Icons.flash_on,
-              textSize: 16.0,
-              onChanged: (bool state) {},
+              iconOn: Icons.flash_off,
+              colorOff: Colors.orange,
+              colorOn: Colors.orange,
+              textOff: '1500',
+              textOn: 'Points',
+              textSize: 18,
             ),
           ],
         ),

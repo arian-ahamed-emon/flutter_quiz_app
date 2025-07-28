@@ -3,7 +3,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:quiz_app/ui/%20screens/home_screen.dart';
 import 'package:quiz_app/ui/%20screens/leader_board_screen.dart';
 import 'package:quiz_app/ui/%20screens/profile_screen.dart';
-import 'package:quiz_app/ui/%20screens/quiz_play_screen.dart';
+import 'package:quiz_app/ui/%20screens/book_mark_screen.dart';
 
 class MainBottomNavBarScreen extends StatefulWidget {
   const MainBottomNavBarScreen({super.key});
@@ -16,8 +16,8 @@ class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
   int _selectedIndex = 0 ;
  final List<Widget> _screens =  [
   HomeScreen(),
-    QuizScreen(),
-    LeaderBoardScreen(),
+   LeaderBoardScreen(),
+    BookMarkScreen(),
     ProfileScreen()
   ];
   @override
@@ -38,8 +38,8 @@ class _MainBottomNavBarScreenState extends State<MainBottomNavBarScreen> {
       gap: 7,
       tabs: [
         GButton(icon: Icons.home,text: 'Home',),
-        GButton(icon: Icons.play_arrow,text: 'Play Quiz',),
-        GButton(icon: Icons.leaderboard,text: 'Leaderboard',),
+        GButton(icon: Icons.emoji_events,text: 'Leaderboard',),
+        GButton(icon: Icons.bookmark,text: 'Bookmarks',),
         GButton(icon: Icons.person,text: 'Profile',),
       ],
     ),

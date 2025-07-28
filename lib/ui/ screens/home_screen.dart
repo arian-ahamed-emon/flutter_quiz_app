@@ -14,12 +14,22 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<Map<String, dynamic>> quizCategory = [
-    {'title': 'General', 'img': AssetPath.general},
     {'title': 'Technology', 'img': AssetPath.tech},
-    {'title': 'Science', 'img': AssetPath.seince}, // spelling fixed
+    {'title': 'Science', 'img': AssetPath.seince},
     {'title': 'Entertainment', 'img': AssetPath.entertainment},
     {'title': 'Sports', 'img': AssetPath.sports},
     {'title': 'Travel', 'img': AssetPath.travel},
+    {'title': 'General', 'img': AssetPath.general},
+  ];
+
+  List<Map<String,dynamic>> _quizList = [
+    {'title': 'Programming Quiz','amount': '40+ Questions','img' : AssetPath.programingQuiz},
+    {'title': 'Kids Quiz','amount': '15+ Questions','img' : AssetPath.kidsQuiz},
+    {'title': 'General Knowledge Quiz','amount': '15+ Questions','img' : AssetPath.generalQuiz},
+    {'title': 'Sports Quiz','amount': '20+ Questions','img' : AssetPath.sportsQuiz},
+    {'title': 'Entertainment Quiz','amount': '13 Questions','img' : AssetPath.entertainmentQuiz},
+    {'title': 'Seince Quiz','amount': '13 Questions','img' : AssetPath.seinceQuiz},
+    {'title': 'Guess Who?','amount': '13 Questions','img' : AssetPath.guessQuiz},
   ];
 
   bool isFlashOn = false;
@@ -48,7 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 buildQuizCategorySection(),
                 const SizedBox(height: 20),
                 HomeSectionHeader(title: "More Quiz", onTap: () {}),
-                buildMoreGamesCategorySection(),
+                buildMoreQuizSection(),
               ],
             ),
           ),
@@ -63,7 +73,7 @@ class _HomeScreenState extends State<HomeScreen> {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
-        color: Colors.deepPurple.shade400.withOpacity(0.2),
+        color: Colors.deepPurple.shade400,
       ),
       child: Row(
         children: [
@@ -186,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget buildMoreGamesCategorySection() {
+  Widget buildMoreQuizSection() {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: GridView.builder(
@@ -196,10 +206,11 @@ class _HomeScreenState extends State<HomeScreen> {
           mainAxisSpacing: 12,
           childAspectRatio: 0.8,
         ),
-        itemCount: 6,
+        itemCount: _quizList.length,
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemBuilder: (context, index) {
+          final quizList = _quizList[index];
           return Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(16),
@@ -214,15 +225,16 @@ class _HomeScreenState extends State<HomeScreen> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(12),
                     child: Image.asset(
-                      AssetPath.signInLogo,
-                      height: 100,
+                      '${quizList['img']}',
+                      height: 130,
                       width: double.infinity,
                       fit: BoxFit.cover,
                     ),
                   ),
                   const SizedBox(height: 12),
+                  Spacer(),
                   Text(
-                    'Tech Quiz',
+                    '${quizList['title']}',
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
@@ -231,13 +243,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "14 Questions",
+                    '${quizList['amount']}',
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: Colors.grey.shade600,
                     ),
                   ),
-                  const Spacer(),
+
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

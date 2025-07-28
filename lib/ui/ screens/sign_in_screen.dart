@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/ui/%20screens/forgot_password_screen.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_up_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
@@ -14,182 +15,236 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailTEController = TextEditingController();
-  TextEditingController _passwordTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
+
+  bool _obscurePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ScreenBackground(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(height: 20),
-                    Image.asset(AssetPath.signInLogo, height: 80, width: 120),
-                    Text(
-                      'Sign In',
-                      style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    SizedBox(height: 35),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _emailTEController,
-                        keyboardType: TextInputType.emailAddress,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          prefixIcon: Icon(Icons.email, color: Colors.white),
-                          hintStyle: GoogleFonts.lato(color: Colors.white),
-                        ),
-                        validator: (String? value) {
-                          if (value?.isEmpty ?? true) {
-                            return 'Enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _passwordTEController,
-                        obscureText: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          prefixIcon: Icon(Icons.lock, color: Colors.white),
-                          suffixIcon: Icon(
-                            Icons.remove_red_eye,
-                            color: Colors.white,
-                          ),
-                          hintStyle: GoogleFonts.lato(color: Colors.white),
-                        ),
-                        validator: (String? value) {
-                          if (value?.isEmpty ?? true) {
-                            return 'Enter a valid password';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-
-                    SizedBox(height: 10),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        TextButton(
-                          onPressed: _onTapForgotButton,
-                          child: Text(
-                            'Forgot Password?',
-                            style: GoogleFonts.lato(color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: _onTapSignInButton,
-                        child: Text('Login'),
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Divider(color: Colors.white, indent: 120),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            'Or',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(color: Colors.white, endIndent: 120),
-                        ),
-                      ],
-                    ),
-                    Wrap(
-                      crossAxisAlignment: WrapCrossAlignment.center,
-                      alignment: WrapAlignment.center,
-                      spacing: 8,
-                      children: [
-                        IconButton(
-                          onPressed: _onTapGoogleSignIn,
-                          icon: Image.asset(AssetPath.googleLogo),
-                        ),
-                        IconButton(
-                          onPressed: _onTapFacebookSignIn,
-                          icon: Image.asset(AssetPath.facebookLogo),
-                        ),
-                      ],
-                    ),
-                  ],
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Image.asset(AssetPath.signInLogo, height: 100),
+                const SizedBox(height: 16),
+                Text(
+                  'Welcome Back!',
+                  style: GoogleFonts.lato(
+                    fontSize: 24,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              SizedBox(height: 20),
-              Text.rich(
-                TextSpan(
-                  text: "Don't have an account?",
-                  style: GoogleFonts.lato(fontSize: 16, color: Colors.white),
-                  children: [
-                    TextSpan(
-                      text: ' Sign Up',
+                const SizedBox(height: 30),
+
+                // Email Field
+                _buildTextField(
+                  controller: _emailTEController,
+                  hint: 'Email',
+                  icon: Icons.email_outlined,
+                  keyboardType: TextInputType.emailAddress,
+                  validator: (val) => (val == null || val.isEmpty)
+                      ? 'Please enter a valid email'
+                      : null,
+                ),
+                const SizedBox(height: 16),
+
+                // Password Field
+                _buildTextField(
+                  controller: _passwordTEController,
+                  hint: 'Password',
+                  icon: Icons.lock_outline,
+                  obscureText: _obscurePassword,
+                  suffix: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility_off
+                          : Icons.visibility,
+                      color: Colors.white70,
+                    ),
+                    onPressed: () {
+                      setState(() => _obscurePassword = !_obscurePassword);
+                    },
+                  ),
+                  validator: (val) => (val == null || val.isEmpty)
+                      ? 'Please enter your password'
+                      : null,
+                ),
+
+                const SizedBox(height: 12),
+
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: TextButton(
+                    onPressed: _onTapForgotButton,
+                    child: Text(
+                      'Forgot Password?',
+                      style: GoogleFonts.lato(color: Colors.white),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 16),
+
+                // Login Button
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _onTapSignInButton,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: Colors.deepPurple,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                    child: Text(
+                      "Sign In",
                       style: GoogleFonts.lato(
                         fontSize: 16,
-                        color: Colors.black45,
                         fontWeight: FontWeight.bold,
                       ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignUpScreen(),
-                            ),
-                          );
-                        },
                     ),
+                  ),
+                ),
+
+                const SizedBox(height: 24),
+
+                Row(
+                  children: [
+                    const Expanded(child: Divider(color: Colors.white70)),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(
+                        "Or continue with",
+                        style: GoogleFonts.lato(color: Colors.white70),
+                      ),
+                    ),
+                    const Expanded(child: Divider(color: Colors.white70)),
                   ],
                 ),
-              ),
-            ],
+
+                const SizedBox(height: 16),
+
+                // Social Login
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _socialButton(AssetPath.googleLogo, _onTapGoogleSignIn),
+                    const SizedBox(width: 16),
+                    _socialButton(AssetPath.facebookLogo, _onTapFacebookSignIn),
+                  ],
+                ),
+
+                const SizedBox(height: 32),
+
+                // Sign Up Link
+                Text.rich(
+                  TextSpan(
+                    text: "Don't have an account?",
+                    style: GoogleFonts.lato(color: Colors.white),
+                    children: [
+                      TextSpan(
+                        text: " Sign Up",
+                        style: GoogleFonts.lato(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (_) => const SignUpScreen(),
+                              ),
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hint,
+    required IconData icon,
+    Widget? suffix,
+    TextInputType keyboardType = TextInputType.text,
+    bool obscureText = false,
+    String? Function(String?)? validator,
+  }) {
+    return TextFormField(
+      controller: controller,
+      obscureText: obscureText,
+      keyboardType: keyboardType,
+      style: GoogleFonts.lato(color: Colors.white),
+      autovalidateMode: AutovalidateMode.onUserInteraction,
+      decoration: InputDecoration(
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.1),
+        prefixIcon: Icon(icon, color: Colors.white),
+        suffixIcon: suffix,
+        hintText: hint,
+        hintStyle: GoogleFonts.lato(color: Colors.white70),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
+      ),
+      validator: validator,
+    );
+  }
+
+  Widget _socialButton(String asset, VoidCallback onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: CircleAvatar(
+        backgroundColor: Colors.white,
+        radius: 22,
+        child: Image.asset(asset, height: 22),
+      ),
+    );
+  }
+
   void _onTapSignInButton() {
+    if (_formKey.currentState!.validate()) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const MainBottomNavBarScreen()),
+      );
+    }
+  }
+
+  void _onTapForgotButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => MainBottomNavBarScreen()),
+      MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
     );
   }
 
-  void _onTapSignUpButton() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => SignUpScreen()),
-    );
+  void _onTapGoogleSignIn() {
+    // Future: Implement Google Sign-in
   }
 
-  void _onTapForgotButton() {}
-
-  void _onTapGoogleSignIn() {}
-
-  void _onTapFacebookSignIn() {}
+  void _onTapFacebookSignIn() {
+    // Future: Implement Facebook Sign-in
+  }
 }

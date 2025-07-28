@@ -13,148 +13,181 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  TextEditingController _emailTEController = TextEditingController();
-  TextEditingController _passwordTEController = TextEditingController();
-  TextEditingController _firstNameTEController = TextEditingController();
-  TextEditingController _lastNameTEController = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailTEController = TextEditingController();
+  final TextEditingController _passwordTEController = TextEditingController();
+  final TextEditingController _confirmPasswordTEController = TextEditingController();
+  final TextEditingController _fullNameTEController = TextEditingController();
+
+  bool _obscurePassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:  ScreenBackground(
+      body: ScreenBackground(
         child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(height: 20),
-                    Image.asset(AssetPath.signInLogo, height: 80, width: 120),
-                    Text(
-                      'Sign Up',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    SizedBox(height: 35),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _firstNameTEController,
-                        keyboardType: TextInputType.name,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                            hintText: 'Full Name',
-                            prefixIcon: Icon(Icons.person,color: Colors.white,)
-                        ),
-                        validator: (String?value) {
-                          if(value?.isEmpty ?? true){
-                            return 'Enter a valid name';
-                          }
-                          return null;
-                        },
-                      ),
-                    ), Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _emailTEController,
-                        keyboardType: TextInputType.emailAddress,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                            hintText: 'Email',
-                            prefixIcon: Icon(Icons.email,color: Colors.white,)
-                        ),
-                        validator: (String?value) {
-                          if(value?.isEmpty ?? true){
-                            return 'Enter a valid email';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _passwordTEController,
-                        obscureText: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          prefixIcon: Icon(Icons.lock,color: Colors.white,),
-                          suffixIcon: Icon(Icons.remove_red_eye,color: Colors.white,),
-                        ),
-                        validator: (String?value) {
-                          if(value?.isEmpty ?? true){
-                            return 'Enter a valid password';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: TextFormField(
-                        controller: _passwordTEController,
-                        obscureText: true,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        decoration: InputDecoration(
-                          hintText: 'Confirm Password',
-                          prefixIcon: Icon(Icons.lock,color: Colors.white,),
-                          suffixIcon: Icon(Icons.remove_red_eye,color: Colors.white,),
-                        ),
-                        validator: (String?value) {
-                          if(value?.isEmpty ?? true){
-                            return 'Enter a valid password';
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(onPressed: _onTapSignInButton, child: Text('Sign Up')),
-                    ),
-                    SizedBox(height: 20,),
-        
-                  ],
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                Image.asset(AssetPath.signInLogo, height: 100),
+                const SizedBox(height: 16),
+                Text(
+                  'Create Account',
+                  style: GoogleFonts.lato(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
+                const SizedBox(height: 30),
 
-              Text.rich(
-                TextSpan(
-                  text: "Have an account?",
-                  style: GoogleFonts.lato(fontSize: 16, color: Colors.white),
-                  children: [
-                    TextSpan(
-                      text: ' Sign In',
-                      style: GoogleFonts.lato(
-                        fontSize: 16,
-                        color: Colors.black45,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      recognizer: TapGestureRecognizer()
-                        ..onTap = () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
-                            ),
-                          );
-                        },
-                    ),
-                  ],
+                // Full Name
+                _buildInputField(
+                  controller: _fullNameTEController,
+                  icon: Icons.person,
+                  hintText: 'Full Name',
                 ),
-              ),
-            ],
+
+                // Email
+                _buildInputField(
+                  controller: _emailTEController,
+                  icon: Icons.email,
+                  hintText: 'Email Address',
+                  keyboardType: TextInputType.emailAddress,
+                ),
+
+                // Password
+                _buildInputField(
+                  controller: _passwordTEController,
+                  icon: Icons.lock,
+                  hintText: 'Password',
+                  isPassword: true,
+                ),
+
+                // Confirm Password
+                _buildInputField(
+                  controller: _confirmPasswordTEController,
+                  icon: Icons.lock_outline,
+                  hintText: 'Confirm Password',
+                  isPassword: true,
+                ),
+
+                const SizedBox(height: 20),
+
+                ElevatedButton(
+                  onPressed: _onTapSignUp,
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(double.infinity, 50),
+                    backgroundColor: Colors.deepPurple,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  child: Text(
+                    'Sign Up',
+                    style: GoogleFonts.lato(
+                      color: Colors.white,
+                      fontSize: 16,
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 30),
+
+                Text.rich(
+                  TextSpan(
+                    text: 'Already have an account? ',
+                    style: GoogleFonts.lato(color: Colors.white, fontSize: 14),
+                    children: [
+                      TextSpan(
+                        text: 'Sign In',
+                        style: GoogleFonts.lato(
+                          color: Colors.yellowAccent,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SignInScreen(),
+                              ),
+                            );
+                          },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
-
     );
   }
-  void _onTapSignInButton(){
-    Navigator.push(context, MaterialPageRoute(builder: (context) => SignInScreen(),));
-  }void _onTapForgotButton(){
 
+  // 📦 Reusable Input Field Builder
+  Widget _buildInputField({
+    required TextEditingController controller,
+    required IconData icon,
+    required String hintText,
+    bool isPassword = false,
+    TextInputType keyboardType = TextInputType.text,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: TextFormField(
+        controller: controller,
+        obscureText: isPassword ? _obscurePassword : false,
+        keyboardType: keyboardType,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        validator: (value) {
+          if ((value ?? '').isEmpty) {
+            return 'Please enter your $hintText';
+          }
+          if (hintText == 'Confirm Password' &&
+              _passwordTEController.text != controller.text) {
+            return 'Passwords do not match';
+          }
+          return null;
+        },
+        style: GoogleFonts.lato(color: Colors.white),
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Colors.white.withOpacity(0.1),
+          hintText: hintText,
+          hintStyle: GoogleFonts.lato(color: Colors.white70),
+          prefixIcon: Icon(icon, color: Colors.white),
+          suffixIcon: isPassword
+              ? IconButton(
+            icon: Icon(
+              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          )
+              : null,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(14),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _onTapSignUp() {
+    if (_formKey.currentState?.validate() ?? false) {
+      // TODO: Handle signup logic
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Signing up...')),
+      );
+    }
   }
 }

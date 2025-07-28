@@ -4,6 +4,8 @@ import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 
+import 'leader_board_screen.dart';
+
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
 
@@ -12,134 +14,154 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  bool isEditable = false;
+
+  final TextEditingController nameController = TextEditingController(text: "Md Remon Sheikh");
+  final TextEditingController phoneController = TextEditingController(text: "01328123424");
+  final TextEditingController emailController = TextEditingController(text: "dev.emon.bd@gmail.com");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color(0xFFF2EAFE), // Light background
       appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(115, 53, 226, 1.0),
+        backgroundColor: const Color(0xFF7335E2),
+        elevation: 0,
         title: Text(
           'User Profile',
-          style: GoogleFonts.lato(
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          ),
+          style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(Icons.edit, color: Colors.white),
-          ),
+            icon: Icon(isEditable ? Icons.check : Icons.edit, color: Colors.white),
+            onPressed: () {
+              setState(() {
+                isEditable = !isEditable;
+              });
+            },
+          )
         ],
       ),
       body: ScreenBackground(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 30),
-            CircleAvatar(
-              radius: 50,
-              backgroundImage: AssetImage(AssetPath.profileImage),
-
-            ),
-
-            SizedBox(height: 10),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabled: false,
-                  prefixIcon: Icon(Icons.person, color: Colors.deepPurple),
-                  hintText: 'Md Remon Sheikh',
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintStyle: TextStyle(color: Colors.deepPurple),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabled: false,
-                  prefixIcon: Icon(Icons.smartphone, color: Colors.deepPurple),
-                  hintText: '01328123424',
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintStyle: TextStyle(color: Colors.deepPurple),
-                ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(5),
-              child: TextField(
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  enabled: false,
-                  prefixIcon: Icon(Icons.email, color: Colors.deepPurple),
-                  hintText: 'dev.emon.bd@gmail.com',
-                  disabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  hintStyle: TextStyle(color: Colors.deepPurple),
-                ),
-              ),
-            ),
-            SizedBox(height: 5,),
-            Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Profile Picture with Badge
+              Stack(
+                alignment: Alignment.bottomRight,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
-                    onPressed: () {},
-                    child: Text('Statistics',style: GoogleFonts.lato(fontSize: 16),),
+                  CircleAvatar(
+                    radius: 55,
+                    backgroundImage: AssetImage(AssetPath.profileImage),
                   ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
-                    onPressed: () {},
-                    child: Text('Leaderboard',style: GoogleFonts.lato(fontSize: 16),),
+                  Positioned(
+                    bottom: 0,
+                    right: 4,
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: Colors.deepPurple,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text("Expert", style: TextStyle(color: Colors.white, fontSize: 12)),
+                    ),
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
 
-            SizedBox(height: 10),
-           Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+              // Text Fields (Editable if isEditable == true)
+              _buildProfileField(Icons.person, 'Full Name', nameController, isEditable),
+              _buildProfileField(Icons.smartphone, 'Phone', phoneController, isEditable),
+              _buildProfileField(Icons.email, 'Email', emailController, isEditable),
+
+              const SizedBox(height: 20),
+
+              // Action Buttons
+              Wrap(
+                spacing: 12,
+                runSpacing: 12,
                 children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
-                    onPressed: () {},
-                    child: Text('Bookmark',style: GoogleFonts.lato(fontSize: 16),),
-                  ),
-                  SizedBox(width: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(fixedSize: Size(190, 45)),
-                    onPressed: () {},
-                    child: Text('Invite Friends',style: GoogleFonts.lato(fontSize: 16),),
-                  ),
+                  _buildActionButton('Statistics', Icons.bar_chart, () {}),
+                  _buildActionButton('Leaderboard', Icons.emoji_events, _onTapLeaderBoardButton),
+                  _buildActionButton('Bookmark', Icons.bookmark, () {}),
+                  _buildActionButton('Invite Friends', Icons.group_add, () {}),
                 ],
               ),
 
-            SizedBox(height: 10),
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(fixedSize: Size(330, 45)),
-                onPressed: () {
-                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => SignInScreen(),),(_) => true);
-                }, child: Text('Log Out')),
-          ],
+              const SizedBox(height: 30),
+
+              // Log out button
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: Icon(Icons.logout),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                  ),
+                  onPressed: () {
+                    Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(builder: (context) => SignInScreen()),
+                          (_) => false,
+                    );
+                  },
+                  label: Text("Log Out", style: GoogleFonts.lato(fontSize: 16)),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  // Profile Input Field Widget
+  Widget _buildProfileField(IconData icon, String label, TextEditingController controller, bool isEditable) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 6),
+      child: TextField(
+        controller: controller,
+        enabled: isEditable,
+        style: GoogleFonts.lato(color: Colors.deepPurple),
+        decoration: InputDecoration(
+          prefixIcon: Icon(icon, color: Colors.deepPurple),
+          filled: true,
+          fillColor: Colors.white,
+          hintText: label,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.white),
+            borderRadius: BorderRadius.circular(15),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Action Button (Statistics, Bookmark, etc.)
+  Widget _buildActionButton(String label, IconData icon, VoidCallback onTap) {
+    return ElevatedButton.icon(
+      onPressed: onTap,
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size(160, 45),
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.deepPurple,
+        elevation: 2,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
+      icon: Icon(icon, size: 20),
+      label: Text(label, style: GoogleFonts.lato(fontSize: 14)),
+    );
+  }
+
+  // Navigate to Leaderboard Screen
+  void _onTapLeaderBoardButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const LeaderBoardScreen()));
   }
 }

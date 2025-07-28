@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 
 class LeaderBoardScreen extends StatefulWidget {
@@ -12,9 +11,9 @@ class LeaderBoardScreen extends StatefulWidget {
 
 class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
   String _selectedValue = 'All';
-  List<String> _filterOptions = ['All', 'Monthly', 'Daly'];
+  final List<String> _filterOptions = ['All', 'Monthly', 'Daily'];
 
-  List<Map<String, dynamic>> players = [
+  final List<Map<String, dynamic>> players = [
     {"name": "Jeff Developer", "points": 1000},
     {"name": "Arian Ahmed Emon", "points": 445},
     {"name": "Riyad", "points": 88},
@@ -30,13 +29,13 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
     sortedPlayers.sort((a, b) => b["points"].compareTo(a["points"]));
 
     final top3 = sortedPlayers.take(3).toList();
-    final restPlayers = sortedPlayers;
+    final restPlayers = sortedPlayers.sublist(3);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Color.fromRGBO(125, 57, 228, 1.0),
+        backgroundColor: const Color(0xFF7D39E4),
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,17 +44,20 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
               'Leaderboard',
               style: GoogleFonts.lato(fontSize: 20, color: Colors.white),
             ),
-            DropdownButton<String>(
-              value: _selectedValue,
-              underline: Container(height: 2, color: Colors.white),
-              style: GoogleFonts.lato(color: Colors.white, fontSize: 16),
-              icon: Icon(Icons.arrow_drop_down,color: Colors.white,),
-              items: _filterOptions.map((String val) {
-                return DropdownMenuItem(value: val, child: Text(val));
-              }).toList(),
-              onChanged: (String? newValue) {
-                setState(() => _selectedValue = newValue!);
-              },
+            DropdownButtonHideUnderline(
+              child: DropdownButton<String>(
+                value: _selectedValue,
+                dropdownColor: Colors.deepPurple,
+                style: GoogleFonts.lato(color: Colors.white),
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+                items: _filterOptions
+                    .map(
+                      (val) => DropdownMenuItem(value: val, child: Text(val)),
+                    )
+                    .toList(),
+                onChanged: (newValue) =>
+                    setState(() => _selectedValue = newValue!),
+              ),
             ),
           ],
         ),
@@ -63,116 +65,91 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
       body: ScreenBackground(
         child: Column(
           children: [
-            const SizedBox(height: 20),
-            // Top 3 Cards
+            const SizedBox(height: 30),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildTopCard(top3[1], 2, isCenter: false),
+                  buildTopCard(top3[1], 2),
                   buildTopCard(top3[0], 1, isCenter: true),
-                  buildTopCard(top3[2], 3, isCenter: false),
+                  buildTopCard(top3[2], 3),
                 ],
               ),
             ),
-
-            const Divider(color: Colors.white),
-            const SizedBox(height: 10),
-            Container(
+            const Divider(color: Colors.white70),
+            Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-              color: Colors.white,
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
+                children: const [
                   Text("Rank", style: TextStyle(fontWeight: FontWeight.bold)),
                   Text("Player", style: TextStyle(fontWeight: FontWeight.bold)),
                   Text("Points", style: TextStyle(fontWeight: FontWeight.bold)),
                 ],
               ),
             ),
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
-                itemCount: 5,
+                itemCount: restPlayers.length,
+                padding: const EdgeInsets.symmetric(horizontal: 10),
                 itemBuilder: (context, index) {
                   final player = restPlayers[index];
-                  return Container(
-                    margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                  return Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Row(
-                      children: [
-                        CircleAvatar(
-                          radius: 16,
-                          backgroundColor: Colors.orangeAccent,
-                          child: Text(
-                            '${index + 1}',
-                            style: const TextStyle(color: Colors.black),
-                          ),
+                    margin: const EdgeInsets.symmetric(vertical: 6),
+                    child: ListTile(
+                      leading: CircleAvatar(
+                        backgroundColor: Colors.orange,
+                        child: Text(
+                          '${index + 1}',
+                          style: const TextStyle(color: Colors.white),
                         ),
-                        const SizedBox(width: 10),
-                        Image.asset(
-                          AssetPath.profileImage,
-                          width: 40,
-                          height: 40,
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Text(
-                            player['name'],
-                            style: GoogleFonts.lato(fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Text('${player['points']}'),
-                      ],
+                      ),
+                      title: Text(
+                        player['name'],
+                        style: GoogleFonts.lato(fontWeight: FontWeight.w600),
+                      ),
+                      subtitle: Text('Rank ${index + 1}'),
+                      trailing: Text(
+                        '${player['points']}',
+                        style: GoogleFonts.lato(fontWeight: FontWeight.bold),
+                      ),
+                      tileColor: Colors.white,
                     ),
                   );
                 },
               ),
             ),
-            Divider(color: Colors.white,),
-            Row(
-              children: [
-                SizedBox(width: 15,),
-                CircleAvatar(
-                  radius: 18,
-                  child: Text('4',style: TextStyle(color: Colors.black,fontWeight: FontWeight.bold),),
-
-                ),
-                SizedBox(width: 20,),
-                CircleAvatar(
-                  radius: 18,
-                  backgroundImage: AssetImage(AssetPath.profileImage),
-                ),
-                SizedBox(width: 10,),
-                Expanded(
-                  child: Text('Md Remon Sheikh',style: GoogleFonts.lato(color: Colors.black,fontWeight: FontWeight.bold),),
-                ),
-                Text('1000',style: GoogleFonts.lato(color: Colors.black,fontWeight: FontWeight.bold),),
-                SizedBox(width: 18,)
-              ],
-            ),
-            SizedBox(height: 5,),
           ],
         ),
       ),
     );
   }
 
-  Widget buildTopCard(Map<String, dynamic> player, int rank, {bool isCenter = false}) {
-    return Container(
-      width: isCenter ? 120 : 100,
-      height: isCenter ? 200 : 170,
-      child: Card(
-        color: Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 4,
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
+  Widget buildTopCard(
+    Map<String, dynamic> player,
+    int rank, {
+    bool isCenter = false,
+  }) {
+    return Column(
+      children: [
+        Container(
+          width: isCenter ? 110 : 90,
+          height: isCenter ? 180 : 150,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black26,
+                blurRadius: 6,
+                offset: Offset(0, 2),
+              ),
+            ],
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -181,20 +158,31 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
                 children: [
                   CircleAvatar(
                     radius: isCenter ? 35 : 30,
-                    backgroundColor: Colors.deepPurple,
-                    child: Icon(Icons.person, size: isCenter ? 35 : 30, color: Colors.grey),
+                    backgroundColor: Colors.deepPurple.shade200,
+                    child: Icon(
+                      Icons.person,
+                      size: isCenter ? 36 : 30,
+                      color: Colors.white,
+                    ),
                   ),
                   Positioned(
-                    right: 0,
+                    right: 4,
+                    top: 4,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.orange,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
                         '#$rank',
-                        style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: Colors.white),
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -211,12 +199,15 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
               ),
               Text(
                 '${player["points"]} pts',
-                style: GoogleFonts.lato(fontSize: isCenter ? 15 : 13),
+                style: GoogleFonts.lato(
+                  fontSize: isCenter ? 14 : 12,
+                  color: Colors.grey.shade700,
+                ),
               ),
             ],
           ),
         ),
-      ),
+      ],
     );
   }
 }

@@ -4,8 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/ui/%20screens/forgot_password_email_screen.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_up_screen.dart';
+import 'package:quiz_app/ui/controller/auth_controller.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
+import 'package:quiz_app/ui/widgets/centerd_circular_progress_indicator.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
+import 'package:quiz_app/ui/widgets/show_snack_bar_message.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -20,6 +23,8 @@ class _SignInScreenState extends State<SignInScreen> {
   final TextEditingController _passwordTEController = TextEditingController();
 
   bool _obscurePassword = true;
+  bool _inProgress = false;
+  final AuthController _auth = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -95,15 +100,16 @@ class _SignInScreenState extends State<SignInScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _onTapSignInButton,
-
-                      child: Text(
-                        "Sign In",
-                        style: GoogleFonts.lato(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
+                      onPressed: _inProgress ? null : _onTapSignInButton,
+                      child: _inProgress
+                          ?  CenterdCircularProgressIndicator()
+                          : Text(
+                              "Sign In",
+                              style: GoogleFonts.lato(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                     ),
                   ),
 
@@ -218,14 +224,34 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _onTapSignInButton() {
+  void _onTapSignInButton() async {
     if (_formKey.currentState!.validate()) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const MainBottomNavBarScreen()),
-      );
+      setState(() {
+        _inProgress = true;
+      });
+
+      try {
+        await _auth.signIn(
+          _emailTEController.text.trim(),
+          _passwordTEController.text.trim(),
+          context,
+        );
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MainBottomNavBarScreen()),
+        );
+      } catch (e) {
+        showSnackBarMessage(context, e.toString());
+      } finally {
+        setState(() {
+          _inProgress = false;
+        });
+      }
     }
   }
+
+
 
   void _onTapForgotButton() {
     Navigator.push(

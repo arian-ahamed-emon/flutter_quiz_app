@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
@@ -15,14 +17,32 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _moveToNextScreen();
+    _checkLoginStatus();
   }
-  void _moveToNextScreen() async {
-    await Future.delayed(Duration(seconds: 3));
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(builder: (context) => SignInScreen()),
-    );
+
+  Future<void> _checkLoginStatus() async {
+    await Future.delayed(const Duration(seconds: 2));
+
+    final prefs = await SharedPreferences.getInstance();
+    final isLoggedIn = prefs.getBool('isLoggedIn') ?? false;
+
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    if (isLoggedIn && currentUser != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const MainBottomNavBarScreen(),
+        ),
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => const SignInScreen(),
+        ),
+      );
+    }
   }
 
   @override

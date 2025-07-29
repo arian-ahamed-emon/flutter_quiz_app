@@ -4,8 +4,11 @@ import 'package:quiz_app/ui/%20screens/book_mark_screen.dart';
 import 'package:quiz_app/ui/%20screens/invite_friends_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
 import 'package:quiz_app/ui/%20screens/statistics_screen.dart';
+import 'package:quiz_app/ui/controller/auth_controller.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
+import 'package:quiz_app/ui/widgets/centerd_circular_progress_indicator.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
+import 'package:quiz_app/ui/widgets/show_snack_bar_message.dart';
 
 import 'leader_board_screen.dart';
 
@@ -19,9 +22,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   bool isEditable = false;
 
-  final TextEditingController nameController = TextEditingController(text: "Md Remon Sheikh");
-  final TextEditingController phoneController = TextEditingController(text: "01328123424");
-  final TextEditingController emailController = TextEditingController(text: "dev.emon.bd@gmail.com");
+  final TextEditingController nameController = TextEditingController(
+    text: "Md Remon Sheikh",
+  );
+  final TextEditingController phoneController = TextEditingController(
+    text: "01328123424",
+  );
+  final TextEditingController emailController = TextEditingController(
+    text: "dev.emon.bd@gmail.com",
+  );
+  bool _inProgress = false;
+  final AuthController _auth = AuthController();
 
   @override
   Widget build(BuildContext context) {
@@ -32,17 +43,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
         elevation: 0,
         title: Text(
           'User Profile',
-          style: GoogleFonts.lato(color: Colors.white, fontWeight: FontWeight.bold),
+          style: GoogleFonts.lato(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         actions: [
           IconButton(
-            icon: Icon(isEditable ? Icons.check : Icons.edit, color: Colors.white),
+            icon: Icon(
+              isEditable ? Icons.check : Icons.edit,
+              color: Colors.white,
+            ),
             onPressed: () {
               setState(() {
                 isEditable = !isEditable;
               });
             },
-          )
+          ),
         ],
       ),
       body: ScreenBackground(
@@ -63,12 +80,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     bottom: 0,
                     right: 4,
                     child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.deepPurple,
                         borderRadius: BorderRadius.circular(20),
                       ),
-                      child: Text("Expert", style: TextStyle(color: Colors.white, fontSize: 12)),
+                      child: Text(
+                        "Expert",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
                     ),
                   ),
                 ],
@@ -76,9 +99,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
               const SizedBox(height: 20),
 
               // Text Fields (Editable if isEditable == true)
-              _buildProfileField(Icons.person, 'Full Name', nameController, isEditable),
-              _buildProfileField(Icons.smartphone, 'Phone', phoneController, isEditable),
-              _buildProfileField(Icons.email, 'Email', emailController, isEditable),
+              _buildProfileField(
+                Icons.person,
+                'Full Name',
+                nameController,
+                isEditable,
+              ),
+              _buildProfileField(
+                Icons.smartphone,
+                'Phone',
+                phoneController,
+                isEditable,
+              ),
+              _buildProfileField(
+                Icons.email,
+                'Email',
+                emailController,
+                isEditable,
+              ),
 
               const SizedBox(height: 20),
 
@@ -87,10 +125,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  _buildActionButton('Statistics', Icons.bar_chart, _onTapStatisticsButton),
-                  _buildActionButton('Leaderboard', Icons.emoji_events, _onTapLeaderBoardButton),
-                  _buildActionButton('Bookmark', Icons.bookmark, _onTapBookmarkButton),
-                  _buildActionButton('Invite Friends', Icons.group_add, _onTapInviteFriendsButton),
+                  _buildActionButton(
+                    'Statistics',
+                    Icons.bar_chart,
+                    _onTapStatisticsButton,
+                  ),
+                  _buildActionButton(
+                    'Leaderboard',
+                    Icons.emoji_events,
+                    _onTapLeaderBoardButton,
+                  ),
+                  _buildActionButton(
+                    'Bookmark',
+                    Icons.bookmark,
+                    _onTapBookmarkButton,
+                  ),
+                  _buildActionButton(
+                    'Invite Friends',
+                    Icons.group_add,
+                    _onTapInviteFriendsButton,
+                  ),
                 ],
               ),
 
@@ -99,21 +153,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  icon: Icon(Icons.logout),
+                  icon: Icon(Icons.logout,color: Colors.white,),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                   ),
-                  onPressed: () {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(builder: (context) => SignInScreen()),
-                          (_) => false,
-                    );
-                  },
-                  label: Text("Log Out", style: GoogleFonts.lato(fontSize: 16)),
+                  onPressed: _inProgress ? null : _onTapLogOutButton,
+                  label: _inProgress
+                      ? CenterdCircularProgressIndicator()
+                      : Text("Log Out", style: GoogleFonts.lato(fontSize: 16,color: Colors.white)),
                 ),
               ),
             ],
@@ -123,7 +170,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Widget _buildProfileField(IconData icon, String label, TextEditingController controller, bool isEditable) {
+  Widget _buildProfileField(
+    IconData icon,
+    String label,
+    TextEditingController controller,
+    bool isEditable,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
       child: TextField(
@@ -160,17 +212,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-
   void _onTapLeaderBoardButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const LeaderBoardScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const LeaderBoardScreen()),
+    );
   }
+
   void _onTapBookmarkButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const BookMarkScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const BookMarkScreen()),
+    );
   }
+
   void _onTapInviteFriendsButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const InviteFriendsScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const InviteFriendsScreen()),
+    );
   }
+
   void _onTapStatisticsButton() {
-    Navigator.push(context, MaterialPageRoute(builder: (context) => const StatisticsScreen()));
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const StatisticsScreen()),
+    );
+  }
+
+  void _onTapLogOutButton() async {
+    setState(() {
+      _inProgress = true;
+    });
+    try {
+      await _auth.signOut(context);
+    } catch (e) {
+      showSnackBarMessage(context, e.toString());
+    } finally {
+      setState(() {
+        _inProgress = false;
+      });
+    }
   }
 }

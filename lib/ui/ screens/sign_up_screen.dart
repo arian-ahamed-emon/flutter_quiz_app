@@ -2,8 +2,11 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
+import 'package:quiz_app/ui/controller/auth_controller.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
+import 'package:quiz_app/ui/widgets/centerd_circular_progress_indicator.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
+import 'package:quiz_app/ui/widgets/show_snack_bar_message.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -17,10 +20,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final TextEditingController _passwordTEController = TextEditingController();
   final TextEditingController _confirmPasswordTEController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _fullNameTEController = TextEditingController();
-
+  final AuthController _auth = AuthController();
   bool _obscurePassword = true;
+  bool _inProgress = false;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +81,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
-                      onPressed: _onTapSignUp,
-                      child: Text(
+                      onPressed: _inProgress ? null : _onTapSignUp,
+                      child: _inProgress
+                          ? CenterdCircularProgressIndicator()
+                          : Text(
                         'Sign Up',
                         style: GoogleFonts.lato(
                           color: Colors.deepPurple,
@@ -87,42 +93,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     ),
                   ),
+              SizedBox(height: 30),
 
-                  const SizedBox(height: 30),
-
-                  Text.rich(
-                    TextSpan(
-                      text: 'Already have an account? ',
-                      style: GoogleFonts.lato(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: 'Sign In',
-                          style: GoogleFonts.lato(
-                            color: Colors.black45,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              Navigator.pushReplacement(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignInScreen(),
-                                ),
-                              );
-                            },
-                        ),
-                      ],
-                    ),
+              Text.rich(
+                TextSpan(
+                  text: 'Already have an account? ',
+                  style: GoogleFonts.lato(
+                    color: Colors.white,
+                    fontSize: 14,
                   ),
-                ],
+                  children: [
+                    TextSpan(
+                      text: 'Sign In',
+                      style: GoogleFonts.lato(
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignInScreen(),
+                            ),
+                          );
+                        },
+                    ),
+                  ],
+                ),
               ),
+              ]
             ),
           ),
         ),
       ),
+      )
     );
   }
 
@@ -159,16 +164,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
           prefixIcon: Icon(icon, color: Colors.white),
           suffixIcon: isPassword
               ? IconButton(
-                  icon: Icon(
-                    _obscurePassword ? Icons.visibility_off : Icons.visibility,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _obscurePassword = !_obscurePassword;
-                    });
-                  },
-                )
+            icon: Icon(
+              _obscurePassword ? Icons.visibility_off : Icons.visibility,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              setState(() {
+                _obscurePassword = !_obscurePassword;
+              });
+            },
+          )
               : null,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(14),
@@ -179,11 +184,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  void _onTapSignUp() {
-    if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Signing up...')));
+  void _onTapSignUp()  async{
+    if (_formKey.currentState!.validate()) {
+      setState(() {
+        _inProgress = true;
+      });
+      try {
+        await _auth.signUp(_emailTEController.text.trim(), _passwordTEController.text.trim(), context);
+      } catch (e) {
+        showSnackBarMessage(context, e.toString());
+      } finally {
+        setState(() {
+          _inProgress = false;
+        });
+      }
     }
   }
 }

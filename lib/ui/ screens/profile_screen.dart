@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/ui/%20screens/book_mark_screen.dart';
+import 'package:quiz_app/ui/%20screens/invite_friends_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
+import 'package:quiz_app/ui/%20screens/statistics_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 
@@ -84,16 +87,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 spacing: 12,
                 runSpacing: 12,
                 children: [
-                  _buildActionButton('Statistics', Icons.bar_chart, () {}),
+                  _buildActionButton('Statistics', Icons.bar_chart, _onTapStatisticsButton),
                   _buildActionButton('Leaderboard', Icons.emoji_events, _onTapLeaderBoardButton),
-                  _buildActionButton('Bookmark', Icons.bookmark, () {}),
-                  _buildActionButton('Invite Friends', Icons.group_add, () {}),
+                  _buildActionButton('Bookmark', Icons.bookmark, _onTapBookmarkButton),
+                  _buildActionButton('Invite Friends', Icons.group_add, _onTapInviteFriendsButton),
                 ],
               ),
 
               const SizedBox(height: 30),
 
-              // Log out button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
@@ -121,7 +123,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Profile Input Field Widget
   Widget _buildProfileField(IconData icon, String label, TextEditingController controller, bool isEditable) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 6),
@@ -144,7 +145,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Action Button (Statistics, Bookmark, etc.)
   Widget _buildActionButton(String label, IconData icon, VoidCallback onTap) {
     return ElevatedButton.icon(
       onPressed: onTap,
@@ -160,8 +160,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  // Navigate to Leaderboard Screen
+
   void _onTapLeaderBoardButton() {
     Navigator.push(context, MaterialPageRoute(builder: (context) => const LeaderBoardScreen()));
+  }
+  void _onTapBookmarkButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const BookMarkScreen()));
+  }
+  void _onTapInviteFriendsButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const InviteFriendsScreen()));
+  }
+  void _onTapStatisticsButton() {
+    Navigator.push(context, MaterialPageRoute(builder: (context) => const StatisticsScreen()));
   }
 }

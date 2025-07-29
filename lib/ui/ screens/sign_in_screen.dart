@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_app/ui/%20screens/forgot_password_screen.dart';
+import 'package:quiz_app/ui/%20screens/forgot_password_email_screen.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_up_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
@@ -230,7 +230,7 @@ class _SignInScreenState extends State<SignInScreen> {
   void _onTapForgotButton() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ForgotPasswordScreen()),
+      MaterialPageRoute(builder: (context) => ForgotPasswordEmailScreen()),
     );
   }
 

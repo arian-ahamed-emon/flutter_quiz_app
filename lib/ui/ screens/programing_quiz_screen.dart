@@ -36,7 +36,9 @@ final List<Map<String,dynamic>> quizList = [
         ),
         leading: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: IconButton(onPressed: () {}, icon: Icon(Icons.arrow_back_ios_new,color: Colors.white,)),
+          child: IconButton(onPressed: () {
+            Navigator.pop(context);
+          }, icon: Icon(Icons.arrow_back_ios_new,color: Colors.white,)),
         ),
       ),
       body: ScreenBackground(

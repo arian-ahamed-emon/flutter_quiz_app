@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:quiz_app/ui/%20screens/kids_quiz_screen.dart';
-import 'package:quiz_app/ui/%20screens/programing_quiz_screen.dart';
+import 'package:quiz_app/ui/%20screens/subcategory_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 import '../widgets/custom_app_bar.dart';
@@ -15,10 +14,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   final List<Widget> _screens = [
-    ProgramingQuizScreen(),
-    KidsQuizScreen()
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
+    SubCategoryScreen(),
   ];
 
   List<Map<String, dynamic>> quizCategory = [
@@ -30,14 +34,42 @@ class _HomeScreenState extends State<HomeScreen> {
     {'title': 'General', 'img': AssetPath.general},
   ];
 
-  List<Map<String,dynamic>> _quizList = [
-    {'title': 'Programming Quiz','amount': '40+ Questions','img' : AssetPath.programingQuiz},
-    {'title': 'Kids Quiz','amount': '15+ Questions','img' : AssetPath.kidsQuiz},
-    {'title': 'General Knowledge Quiz','amount': '15+ Questions','img' : AssetPath.generalQuiz},
-    {'title': 'Sports Quiz','amount': '20+ Questions','img' : AssetPath.sportsQuiz},
-    {'title': 'Entertainment Quiz','amount': '13 Questions','img' : AssetPath.entertainmentQuiz},
-    {'title': 'Seince Quiz','amount': '13 Questions','img' : AssetPath.seinceQuiz},
-    {'title': 'Guess Who?','amount': '13 Questions','img' : AssetPath.guessQuiz},
+  List<Map<String, dynamic>> _quizList = [
+    {
+      'title': 'Programming Quiz',
+      'amount': '40+ Questions',
+      'img': AssetPath.programingQuiz,
+    },
+    {
+      'title': 'Kids Quiz',
+      'amount': '15+ Questions',
+      'img': AssetPath.kidsQuiz,
+    },
+    {
+      'title': 'General Knowledge Quiz',
+      'amount': '15+ Questions',
+      'img': AssetPath.generalQuiz,
+    },
+    {
+      'title': 'Sports Quiz',
+      'amount': '20+ Questions',
+      'img': AssetPath.sportsQuiz,
+    },
+    {
+      'title': 'Entertainment Quiz',
+      'amount': '13 Questions',
+      'img': AssetPath.entertainmentQuiz,
+    },
+    {
+      'title': 'Seince Quiz',
+      'amount': '13 Questions',
+      'img': AssetPath.seinceQuiz,
+    },
+    {
+      'title': 'Guess Who?',
+      'amount': '13 Questions',
+      'img': AssetPath.guessQuiz,
+    },
   ];
 
   bool isFlashOn = false;
@@ -220,8 +252,11 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           final quizList = _quizList[index];
           return GestureDetector(
-            onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => _screens[index],));
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => _screens[index]),
+              );
             },
             child: Card(
               shape: RoundedRectangleBorder(

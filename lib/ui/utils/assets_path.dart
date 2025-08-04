@@ -19,11 +19,16 @@ class AssetPath {
 
   //Icons
   static String _iconPath = 'assets/icons';
-  static String dailyTaskImg = '$_iconPath/task1.png';
+  static String dailyTaskImg = '$_iconPath/task.png';
   static String general= '$_iconPath/book.png';
   static String tech= '$_iconPath/tech1.png';
   static String seince= '$_iconPath/seince.png';
   static String entertainment= '$_iconPath/entertainment.png';
   static String sports = '$_iconPath/sports.png';
   static String travel = '$_iconPath/travel.png';
+  static String pgBasic = '$_iconPath/pg_basic.jpg';
+  static String flutterBasic = '$_iconPath/flutter_logo.png';
+  static String oopLogo = '$_iconPath/oop_logo.jpg';
+  static String htmlLogo = '$_iconPath/html_logo.png';
+  static String pythonLogo = '$_iconPath/python_logo.jpeg';
 }

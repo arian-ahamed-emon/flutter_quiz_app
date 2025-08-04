@@ -191,9 +191,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
       try {
         await _auth.signUp(_emailTEController.text.trim(), _passwordTEController.text.trim(), context);
+
       } catch (e) {
         showSnackBarMessage(context, e.toString());
       } finally {
+        _fullNameTEController.clear();
+        _emailTEController.clear();
+        _passwordTEController.clear();
         setState(() {
           _inProgress = false;
         });

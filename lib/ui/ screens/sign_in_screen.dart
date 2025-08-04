@@ -9,6 +9,7 @@ import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/centerd_circular_progress_indicator.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 import 'package:quiz_app/ui/widgets/show_snack_bar_message.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -236,7 +237,6 @@ class _SignInScreenState extends State<SignInScreen> {
           _passwordTEController.text.trim(),
           context,
         );
-
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (_) => const MainBottomNavBarScreen()),
@@ -250,9 +250,6 @@ class _SignInScreenState extends State<SignInScreen> {
       }
     }
   }
-
-
-
   void _onTapForgotButton() {
     Navigator.push(
       context,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:quiz_app/ui/%20screens/quiz_play_screen.dart';
+import 'package:quiz_app/ui/%20screens/subcategory_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
@@ -32,14 +34,14 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const MainBottomNavBarScreen(),
+          builder: (_) => const SignInScreen(),
         ),
       );
     } else {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (_) => const SignInScreen(),
+          builder: (_) => const MainBottomNavBarScreen(),
         ),
       );
     }

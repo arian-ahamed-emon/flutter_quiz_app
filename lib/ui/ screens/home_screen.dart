@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/services/data_source.dart';
 import 'package:quiz_app/ui/%20screens/subcategory_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
@@ -14,17 +15,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final List<Widget> _screens = [
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-    SubCategoryScreen(),
-  ];
-
   List<Map<String, dynamic>> quizCategory = [
     {'title': 'Technology', 'img': AssetPath.tech},
     {'title': 'Science', 'img': AssetPath.seince},
@@ -61,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
       'img': AssetPath.entertainmentQuiz,
     },
     {
-      'title': 'Seince Quiz',
+      'title': 'Science Quiz',
       'amount': '13 Questions',
       'img': AssetPath.seinceQuiz,
     },
@@ -71,14 +61,6 @@ class _HomeScreenState extends State<HomeScreen> {
       'img': AssetPath.guessQuiz,
     },
   ];
-
-  bool isFlashOn = false;
-
-  void toggleSwitch() {
-    setState(() {
-      isFlashOn = !isFlashOn;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -251,12 +233,18 @@ class _HomeScreenState extends State<HomeScreen> {
         shrinkWrap: true,
         itemBuilder: (context, index) {
           final quizList = _quizList[index];
+          final bundle = dummyBundle.length > index ? dummyBundle[index] : null;
+
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => _screens[index]),
-              );
+              if (bundle != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SubCategoryScreen(bundle: bundle),
+                  ),
+                );
+              }
             },
             child: Card(
               shape: RoundedRectangleBorder(
@@ -279,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Spacer(),
+                    const Spacer(),
                     Text(
                       '${quizList['title']}',
                       style: GoogleFonts.poppins(
@@ -296,7 +284,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.grey.shade600,
                       ),
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/services/models/quiz_bundle_model.dart';
 import 'package:quiz_app/ui/%20screens/quiz_play_screen.dart';
 import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 
 class SubCategoryScreen extends StatefulWidget {
-  const SubCategoryScreen({super.key});
+  const SubCategoryScreen({super.key, required QuizBundleModel bundle});
 
   @override
   State<SubCategoryScreen> createState() => _SubCategoryScreenState();
@@ -14,63 +15,52 @@ class SubCategoryScreen extends StatefulWidget {
 class _SubCategoryScreenState extends State<SubCategoryScreen> {
   int? _selectedIndex;
 
-  final List<Widget> _screens = [
-    QuizPlayScreen(),
-    QuizPlayScreen(),
-    QuizPlayScreen(),
-    QuizPlayScreen(),
-    QuizPlayScreen(),
-  ];
-
   final List<Map<String, dynamic>> quizList = [
     {
       'title': 'Programming Basics',
       'amount': '15 Questions',
       'img': AssetPath.pgBasic,
-      'points': 50,
     },
     {
       'title': 'Dart & Flutter Basics',
       'amount': '15 Questions',
       'img': AssetPath.flutterBasic,
-      'points': 50,
     },
     {
       'title': 'OOP Concepts',
       'amount': '15 Questions',
       'img': AssetPath.oopLogo,
-      'points': 50,
     },
     {
       'title': 'HTML/CSS Basics',
       'amount': '15 Questions',
       'img': AssetPath.htmlLogo,
-      'points': 50,
     },
     {
       'title': 'Python Fundamentals',
       'amount': '15 Questions',
       'img': AssetPath.pythonLogo,
-      'points': 50,
     },
   ];
+
+  void _onStartQuiz() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => QuizPlayScreen(),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: Color.fromRGBO(115, 53, 226, 1.0),
-        title: Text(
-          'Programming',
-          style: GoogleFonts.lato(color: Colors.white),
-        ),
+        title: Text('Programming', style: GoogleFonts.lato(color: Colors.white)),
         leading: IconButton(
-          padding: EdgeInsets.zero,
-          onPressed: () {
-            Navigator.pop(context);
-          },
           icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () => Navigator.pop(context),
         ),
       ),
       body: Stack(
@@ -82,7 +72,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                 children: [
                   if (_selectedIndex != null)
                     Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.all(10),
                       child: Text(
                         "Selected: ${quizList[_selectedIndex!]['title']}",
                         style: GoogleFonts.lato(
@@ -97,48 +87,38 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                       itemCount: quizList.length,
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       itemBuilder: (context, index) {
-                        final _quiz = quizList[index];
+                        final quiz = quizList[index];
                         final isSelected = _selectedIndex == index;
+
                         return GestureDetector(
                           onTap: () {
-                            setState(() {
-                              _selectedIndex = index;
-                            });
+                            setState(() => _selectedIndex = index);
                           },
                           child: AnimatedContainer(
                             duration: Duration(milliseconds: 300),
-                            curve: Curves.easeInOut,
-
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 12),
                             decoration: BoxDecoration(
                               color: isSelected
                                   ? Colors.deepPurple.shade50
                                   : Colors.white,
                               borderRadius: BorderRadius.circular(12),
-                              border: isSelected
-                                  ? Border.all(
-                                      color: Colors.deepPurple,
-                                      width: 3,
-                                    )
-                                  : Border.all(
-                                      color: Colors.grey.shade300,
-                                      width: 1,
-                                    ),
+                              border: Border.all(
+                                color: isSelected
+                                    ? Colors.deepPurple
+                                    : Colors.grey.shade300,
+                                width: isSelected ? 3 : 1,
+                              ),
                               boxShadow: isSelected
                                   ? [
-                                      BoxShadow(
-                                        color: Colors.deepPurple.withOpacity(
-                                          0.3,
-                                        ),
-                                        blurRadius: 10,
-                                        offset: Offset(0, 6),
-                                      ),
-                                    ]
+                                BoxShadow(
+                                  color: Colors.deepPurple.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: Offset(0, 6),
+                                ),
+                              ]
                                   : [],
-                            ),
-                            margin: const EdgeInsets.symmetric(vertical: 6),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 10,
-                              horizontal: 12,
                             ),
                             child: Row(
                               children: [
@@ -149,24 +129,23 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       : Colors.orange,
                                   child: ClipOval(
                                     child: Image.asset(
-                                      _quiz['img'],
-                                      fit: BoxFit.cover,
+                                      quiz['img'],
                                       width: 32,
                                       height: 32,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
                                 SizedBox(width: 12),
                                 Expanded(
                                   child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        _quiz['title'],
+                                        quiz['title'],
                                         style: GoogleFonts.lato(
-                                          fontWeight: FontWeight.w600,
                                           fontSize: 16,
+                                          fontWeight: FontWeight.w600,
                                           color: isSelected
                                               ? Colors.deepPurple
                                               : Colors.black,
@@ -174,7 +153,7 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                                       ),
                                       SizedBox(height: 4),
                                       Text(
-                                        _quiz['amount'],
+                                        quiz['amount'],
                                         style: TextStyle(
                                           color: isSelected
                                               ? Colors.deepPurple.shade300
@@ -200,15 +179,10 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
               bottom: 20,
               left: 20,
               right: 20,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => _screens[_selectedIndex!],
-                    ),
-                  );
-                },
+              child: ElevatedButton.icon(
+                onPressed: _onStartQuiz,
+                icon: Icon(Icons.play_arrow, color: Colors.white),
+                label: Text("Start Quiz", style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
                   padding: const EdgeInsets.symmetric(vertical: 14),
@@ -219,14 +193,6 @@ class _SubCategoryScreenState extends State<SubCategoryScreen> {
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(Icons.play_arrow, color: Colors.white),
-                    SizedBox(width: 8),
-                    Text("Start Quiz", style: TextStyle(color: Colors.white)),
-                  ],
                 ),
               ),
             ),

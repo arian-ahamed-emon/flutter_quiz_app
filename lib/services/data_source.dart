@@ -12,7 +12,6 @@ final dummyBundle = [
         name: 'Programming Basic',
         quizzes: [
           QuizModel(
-            id: 'q1',
             question:
                 'Which of the following is a valid variable name in most languages?',
             options: ['2name', 'my-name', 'my_name', 'class'],
@@ -20,7 +19,6 @@ final dummyBundle = [
           ),//
 
           QuizModel(
-            id: 'q2',
             question:
                 ' What symbol is used for comments in Python?',
             options: ['//', '#', '/* */', '--'],

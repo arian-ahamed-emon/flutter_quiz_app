@@ -26,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Map<String, dynamic>> _quizList = [
     {
-      'title': 'Programming Quiz',
+      'title': 'Programming Quiz', // spelling fixed
       'amount': '40+ Questions',
       'img': AssetPath.programingQuiz,
     },
@@ -100,8 +100,8 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Row(
         children: [
           Container(
-            width: 150,
-            height: 150,
+            width: 120,
+            height: 120,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
               color: Colors.white10,
@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         'Daily Task',
                         style: GoogleFonts.poppins(
                           color: Colors.white,
-                          fontSize: 24,
+                          fontSize: 22,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -145,10 +145,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   '14 Questions',
                   style: GoogleFonts.poppins(
                     color: Colors.white70,
-                    fontSize: 16,
+                    fontSize: 14,
                   ),
                 ),
-                const SizedBox(height: 16),
+                const SizedBox(height: 12),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: LinearProgressIndicator(
@@ -160,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -184,7 +184,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget buildQuizCategorySection() {
     return SizedBox(
-      height: 120,
+      height: 110,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -195,21 +195,25 @@ class _HomeScreenState extends State<HomeScreen> {
           return Column(
             children: [
               Container(
-                height: 70,
-                width: 70,
+                height: 65,
+                width: 65,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  color: Colors.white10,
-                  image: DecorationImage(
-                    image: AssetImage(category['img']),
+                  color: Colors.white12, // consistent shade
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.asset(
+                    category['img'],
                     fit: BoxFit.cover,
                   ),
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 category['title'],
-                style: GoogleFonts.poppins(color: Colors.white, fontSize: 14),
+                style: GoogleFonts.poppins(
+                    color: Colors.white, fontSize: 13, height: 1.2),
               ),
             ],
           );
@@ -226,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisCount: 2,
           crossAxisSpacing: 12,
           mainAxisSpacing: 12,
-          childAspectRatio: 0.8,
+          childAspectRatio: 0.78,
         ),
         itemCount: _quizList.length,
         physics: const NeverScrollableScrollPhysics(),
@@ -251,7 +255,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 borderRadius: BorderRadius.circular(16),
               ),
               color: Colors.white,
-              elevation: 4,
+              elevation: 5,
+              shadowColor: Colors.black26,
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Column(
@@ -261,29 +266,31 @@ class _HomeScreenState extends State<HomeScreen> {
                       borderRadius: BorderRadius.circular(12),
                       child: Image.asset(
                         '${quizList['img']}',
-                        height: 130,
+                        height: 120,
                         width: double.infinity,
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 12),
-                    const Spacer(),
+                    const SizedBox(height: 10),
                     Text(
                       '${quizList['title']}',
                       style: GoogleFonts.poppins(
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 4),
+                    const SizedBox(height: 3),
                     Text(
                       '${quizList['amount']}',
                       style: GoogleFonts.poppins(
-                        fontSize: 14,
+                        fontSize: 13,
                         color: Colors.grey.shade600,
                       ),
                     ),
+                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -298,7 +305,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             Text(
                               '120k',
                               style: GoogleFonts.poppins(
-                                fontSize: 14,
+                                fontSize: 13,
                                 fontWeight: FontWeight.w600,
                                 color: Colors.deepPurple,
                               ),
@@ -306,8 +313,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ],
                         ),
                         Container(
-                          width: 36,
-                          height: 36,
+                          width: 32,
+                          height: 32,
                           decoration: const BoxDecoration(
                             color: Colors.orange,
                             shape: BoxShape.circle,
@@ -315,7 +322,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: const Icon(
                             Icons.play_arrow,
                             color: Colors.white,
-                            size: 20,
+                            size: 18,
                           ),
                         ),
                       ],

@@ -1,9 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:quiz_app/ui/%20screens/sign_in_screen.dart';
-import 'package:quiz_app/ui/widgets/show_snack_bar_message.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../ screens/sign_in_screen.dart';
+import '../widgets/show_snack_bar_message.dart';
 
 class AuthController {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -57,7 +57,6 @@ class AuthController {
 
       final user = credential.user;
       if (user != null) {
-        // Save login status
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isLoggedIn', true);
 
@@ -134,49 +133,6 @@ class AuthController {
     );
   }
 
-  /*Future<void> googleSignIn(BuildContext context) async{
-  try{
-    final GoogleSignIn googleSignIn = GoogleSignIn();
-    final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    if(googleUser == null){
-      return ;
-    }
-    final GoogleSignInAuthentication googleAuth =  await googleUser.authentication;
 
-    final OAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken
-    );
-    final userCredential =  await _auth.signInWithCredential(credential);
-    final user = userCredential.user;
-    if (user != null) {
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.setBool('isLoggedIn', true);
 
-      showSnackBarMessage(
-        context,
-        'Google Sign In successful!',
-        backgroundColor: Colors.green,
-        icon: Icons.check_circle_outline,
-        iconColor: Colors.white,
-      );
-    }
-  } on FirebaseAuthException catch (e) {
-    showSnackBarMessage(
-      context,
-      e.message ?? 'Firebase Auth Error',
-      backgroundColor: Colors.red.shade600,
-      icon: Icons.error_outline,
-      iconColor: Colors.white,
-    );
-  } catch (e) {
-    showSnackBarMessage(
-      context,
-      'Google Sign-In failed. Try again.',
-      backgroundColor: Colors.red.shade600,
-      icon: Icons.error_outline,
-      iconColor: Colors.white,
-    );
   }
-  }*/
-}

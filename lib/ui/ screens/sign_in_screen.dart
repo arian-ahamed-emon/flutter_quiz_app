@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:quiz_app/ui/%20screens/forgot_password_email_screen.dart';
 import 'package:quiz_app/ui/%20screens/main_bottom_nav_bar_screen.dart';
 import 'package:quiz_app/ui/%20screens/sign_up_screen.dart';
@@ -26,6 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _obscurePassword = true;
   bool _inProgress = false;
   final AuthController _auth = AuthController();
+  bool isLogged = false;
 
   @override
   Widget build(BuildContext context) {
@@ -109,6 +111,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               style: GoogleFonts.lato(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: Colors.white
                               ),
                             ),
                     ),
@@ -257,7 +260,12 @@ class _SignInScreenState extends State<SignInScreen> {
     );
   }
 
-  void _onTapGoogleSignIn() {}
+  void _onTapGoogleSignIn() async {
 
-  void _onTapFacebookSignIn() {}
-}
+  }
+
+  void _onTapFacebookSignIn(){
+
+  }
+
+  }

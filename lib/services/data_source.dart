@@ -13,14 +13,14 @@ final dummyBundle = [
         quizzes: [
           QuizModel(
             question:
-                'Which of the following is a valid variable name in most languages?',
+            'Which of the following is a valid variable name in most languages?',
             options: ['2name', 'my-name', 'my_name', 'class'],
             correctAnswerIndex: 2,
           ),//
 
           QuizModel(
             question:
-                ' What symbol is used for comments in Python?',
+            ' What symbol is used for comments in Python?',
             options: ['//', '#', '/* */', '--'],
             correctAnswerIndex: 0,
           ),

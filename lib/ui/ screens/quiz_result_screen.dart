@@ -16,9 +16,9 @@ class QuizResultScreen extends StatefulWidget {
     super.key,
     required this.score,
     required this.total,
-    this.correct = 0,
-    this.wrong = 0,
-    this.unanswered = 0,
+     required this.correct,
+    required this.wrong,
+    required this.unanswered,
   });
 
   @override
@@ -321,7 +321,6 @@ class _QuizResultScreenState extends State<QuizResultScreen>
                               ],
                             ),
                             const SizedBox(height: 30),
-                            // Summary badges
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [

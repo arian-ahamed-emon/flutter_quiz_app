@@ -50,19 +50,19 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyCw5CtVpPwaqyfVYMHDJZWcpaEfLItmpqA',
-    appId: '1:803651523189:android:95b41822b3003bb88a9e3c',
-    messagingSenderId: '803651523189',
-    projectId: 'quiz-app-882a0',
-    storageBucket: 'quiz-app-882a0.firebasestorage.app',
+    apiKey: 'AIzaSyAVjVvjpcpEnoRiaNxL6ji2bML91FqsftA',
+    appId: '1:110171087300:android:be2c45ead61d8a267b8491',
+    messagingSenderId: '110171087300',
+    projectId: 'quiz-app-4e75f',
+    storageBucket: 'quiz-app-4e75f.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBvcGZhF6Q-JzACyNzGdz4PnE6vYQyDvU0',
-    appId: '1:803651523189:ios:72f12bd064299d698a9e3c',
-    messagingSenderId: '803651523189',
-    projectId: 'quiz-app-882a0',
-    storageBucket: 'quiz-app-882a0.firebasestorage.app',
+    apiKey: 'AIzaSyBzmC56yXRrZFP38ezNfF36rFbLpDoYvak',
+    appId: '1:110171087300:ios:b915f7eb658f42cc7b8491',
+    messagingSenderId: '110171087300',
+    projectId: 'quiz-app-4e75f',
+    storageBucket: 'quiz-app-4e75f.firebasestorage.app',
     iosBundleId: 'com.quiz.app.quizApp',
   );
 }

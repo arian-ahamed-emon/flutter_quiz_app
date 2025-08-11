@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:quiz_app/ui/utils/assets_path.dart';
 import 'package:quiz_app/ui/widgets/screen_background.dart';
 
 class LeaderBoardScreen extends StatefulWidget {
@@ -14,13 +15,12 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
   final List<String> _filterOptions = ['All', 'Monthly', 'Daily'];
 
   final List<Map<String, dynamic>> players = [
-    {"name": "Jeff Developer", "points": 1000},
-    {"name": "Arian Ahmed Emon", "points": 445},
-    {"name": "Riyad", "points": 88},
-    {"name": "Mahi", "points": 1000},
-    {"name": "Ratul", "points": 1000},
-    {"name": "Jac", "points": 900},
-    {"name": "Dac", "points": 500},
+    {"name": "Remon Sheikh", "points": 1250,'profileImg' : AssetPath.profileImage},
+    {"name": "Arian Khan", "points": 1120,'profileImg' : AssetPath.profileImage},
+    {"name": "Ridoy Hasan", "points": 1070,'profileImg' : AssetPath.profileImage},
+    {"name": "Shakib499", "points": 950,'profileImg' : AssetPath.profileImage},
+    {"name": "Prince 33", "points": 820,'profileImg' : AssetPath.profileImage},
+    {"name": "Rabbi Rahman", "points": 755,'profileImg' : AssetPath.profileImage},
   ];
 
   @override
@@ -29,7 +29,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
     sortedPlayers.sort((a, b) => b["points"].compareTo(a["points"]));
 
     final top3 = sortedPlayers.take(3).toList();
-    final restPlayers = sortedPlayers.sublist(3);
+    final restPlayers = sortedPlayers.sublist(0);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -159,11 +159,7 @@ class _LeaderBoardScreenState extends State<LeaderBoardScreen> {
                   CircleAvatar(
                     radius: isCenter ? 35 : 30,
                     backgroundColor: Colors.deepPurple.shade200,
-                    child: Icon(
-                      Icons.person,
-                      size: isCenter ? 36 : 30,
-                      color: Colors.white,
-                    ),
+                    backgroundImage: AssetImage(player['profileImg']),
                   ),
                   Positioned(
                     right: 4,

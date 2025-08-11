@@ -87,7 +87,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           : Text(
                         'Sign Up',
                         style: GoogleFonts.lato(
-                          color: Colors.deepPurple,
+                          color: Colors.white,
                           fontSize: 16,
                         ),
                       ),

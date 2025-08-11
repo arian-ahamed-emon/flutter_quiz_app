@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/ui/%20screens/splash_screen.dart';
 
 class QuizApp extends StatelessWidget {
@@ -23,7 +24,11 @@ ElevatedButtonThemeData _elevatedButtonThemeData() {
   return ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       fixedSize: Size(400, 45),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15)
+      ),
+      backgroundColor: Colors.deepPurple,
+      textStyle: GoogleFonts.lato(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18)
     ),
   );
 }

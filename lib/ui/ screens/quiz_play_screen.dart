@@ -58,6 +58,11 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
   int? _selectedIndex;
   bool answered = false;
 
+  // New counters
+  int correctAnswers = 0;
+  int wrongAnswers = 0;
+  int unanswered = 0;
+
   Duration _timerDuration = const Duration(minutes: 5);
   Key _timerKey = UniqueKey();
 
@@ -65,7 +70,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
 
   String get timerText {
     final secondsLeft = (_timerDuration.inSeconds * (1 - _progress)).ceil();
-    return '00:${secondsLeft.toString().padLeft(3)}';
+    return '00:${secondsLeft.toString().padLeft(2, '0')}';
   }
 
   void checkAnswer(int index) {
@@ -74,8 +79,12 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
     setState(() {
       _selectedIndex = index;
       answered = true;
+
       if (index == questions[currentIndex].correctAnswerIndex) {
         score++;
+        correctAnswers++;
+      } else {
+        wrongAnswers++;
       }
     });
 
@@ -89,16 +98,25 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
           _timerKey = UniqueKey();
           _progress = 0.0;
         } else {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) =>
-                  QuizResultScreen(score: score, total: questions.length),
-            ),
-          );
+          _goToResultScreen();
         }
       });
     });
+  }
+
+  void _goToResultScreen() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizResultScreen(
+          score: score,
+          total: questions.length,
+          correct: correctAnswers,
+          wrong: wrongAnswers,
+          unanswered: unanswered,
+        ),
+      ),
+    );
   }
 
   void _showTimeUpDialog() {
@@ -119,6 +137,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
           TextButton(
             onPressed: () {
               Navigator.pop(context);
+              unanswered++;
               _skipQuestion();
             },
             child: const Text('Skip Question'),
@@ -138,6 +157,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
 
   void _skipQuestion() {
     setState(() {
+      unanswered++;
       if (currentIndex < questions.length - 1) {
         currentIndex++;
         _selectedIndex = null;
@@ -146,13 +166,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
         _timerKey = UniqueKey();
         _progress = 0.0;
       } else {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                QuizResultScreen(score: score, total: questions.length),
-          ),
-        );
+        _goToResultScreen();
       }
     });
   }
@@ -199,7 +213,6 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
                     buildTimerSection(),
                     buildOptionSection(question),
                     buildQuizHelpSection(),
-
                     const SizedBox(height: 10),
                   ],
                 ),
@@ -241,6 +254,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
       ),
     );
   }
+
   Widget buildTimerSection() {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -273,6 +287,7 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
       ),
     );
   }
+
   Widget buildOptionSection(QuizModel question) {
     return Expanded(
       child: ListView.builder(
@@ -330,38 +345,35 @@ class _QuizPlayScreenState extends State<QuizPlayScreen> {
       ),
     );
   }
+
   Widget buildQuizHelpSection() {
     return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      QuizHelpButton(
-                        labelTop: '50/50',
-                        labelBottom: 'Answer',
-                        onTap: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      QuizHelpButton(
-                        labelBottom: 'Audience',
-                        icon: Icons.group,
-                        onTap: () {},
-                      ),
-                      const SizedBox(width: 5),
-                      QuizHelpButton(
-                        labelBottom: 'Add Time',
-                        icon: Icons.access_time_rounded,
-                        onTap: _addExtraTime,
-                      ),
-                      const SizedBox(width: 5),
-                      QuizHelpButton(
-                        labelBottom: 'Skip',
-                        icon: Icons.double_arrow,
-                        onTap: _skipQuestion,
-                      ),
-                    ],
-                  );
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        QuizHelpButton(
+          labelTop: '50/50',
+          labelBottom: 'Answer',
+          onTap: () {},
+        ),
+        const SizedBox(width: 5),
+        QuizHelpButton(
+          labelBottom: 'Audience',
+          icon: Icons.group,
+          onTap: () {},
+        ),
+        const SizedBox(width: 5),
+        QuizHelpButton(
+          labelBottom: 'Add Time',
+          icon: Icons.access_time_rounded,
+          onTap: _addExtraTime,
+        ),
+        const SizedBox(width: 5),
+        QuizHelpButton(
+          labelBottom: 'Skip',
+          icon: Icons.double_arrow,
+          onTap: _skipQuestion,
+        ),
+      ],
+    );
   }
-
-
-
-
 }

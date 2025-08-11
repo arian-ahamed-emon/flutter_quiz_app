@@ -26,14 +26,16 @@ class _HomeScreenState extends State<HomeScreen> {
 
   List<Map<String, dynamic>> _quizList = [
     {
-      'title': 'Programming Quiz', // spelling fixed
-      'amount': '40+ Questions',
+      'title': 'Programming Quiz',
+      'amount': '400+ Questions',
       'img': AssetPath.programingQuiz,
+      'winner' : '120k'
     },
     {
       'title': 'Kids Quiz',
-      'amount': '15+ Questions',
+      'amount': '150+ Questions',
       'img': AssetPath.kidsQuiz,
+      'winner' : '140k'
     },
     {
       'title': 'General Knowledge Quiz',
@@ -238,7 +240,6 @@ class _HomeScreenState extends State<HomeScreen> {
         itemBuilder: (context, index) {
           final quizList = _quizList[index];
           final bundle = dummyBundle.length > index ? dummyBundle[index] : null;
-
           return GestureDetector(
             onTap: () {
               if (bundle != null) {
@@ -271,7 +272,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                    const SizedBox(height: 10),
+                    Spacer(),
                     Text(
                       '${quizList['title']}',
                       style: GoogleFonts.poppins(
@@ -290,7 +291,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.grey.shade600,
                       ),
                     ),
-                    const Spacer(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -303,7 +303,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             const SizedBox(width: 4),
                             Text(
-                              '120k',
+                              '${quizList['winner']}',
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w600,
